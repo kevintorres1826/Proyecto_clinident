@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLINIDENT | Elite Management System</title>
+
+    <!-- 🔥 ICONO APP -->
+    <link rel="manifest" href="manifest.json?v=10">
+    <link rel="icon" href="icon-192.png">
+    <meta name="theme-color" content="#4a8dc7">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary: #0f172a;
@@ -63,90 +70,92 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
+
 <body>
 
-    <nav class="navbar">
-        <div class="logo" onclick="location.href='login.html'">CLINI<span>DENT</span></div>
-        <div style="font-weight: 800; color: var(--accent);">2026</div>
-    </nav>
+<nav class="navbar">
+    <div class="logo" onclick="location.href='login.html'">CLINI<span>DENT</span></div>
+    <div style="font-weight: 800; color: var(--accent);">2026</div>
+</nav>
 
-    <div class="container">
-        <div id="view-menu" class="view active">
-            <h1 style="color: white; font-size: 2.8rem; margin: 0;">Bienvenido, <span style="color:var(--primary)">Nico</span></h1>
-            <p style="color: white; margin-bottom: 40px; font-weight: 600;">Gestión de citas médicas de alta precisión.</p>
-            <div class="menu-grid">
-                <div class="menu-item" onclick="cambiarVista('agendar')">
-                    <i style="color: var(--accent);">📅</i>
-                    <h3>Asignar Cita</h3>
-                    <p>Nuevos pacientes.</p>
-                </div>
-                <div class="menu-item" onclick="cambiarVista('lista'); renderLista();">
-                    <i style="color: var(--accent);">📋</i>
-                    <h3>Ver Citas</h3>
-                    <p>Consultar registros.</p>
-                </div>
+<div class="container">
+
+    <div id="view-menu" class="view active">
+        <h1 style="color: white; font-size: 2.8rem; margin: 0;">Bienvenido, <span style="color:var(--primary)">Nico</span></h1>
+        <p style="color: white; margin-bottom: 40px; font-weight: 600;">Gestión de citas médicas de alta precisión.</p>
+        <div class="menu-grid">
+            <div class="menu-item" onclick="cambiarVista('agendar')">
+                <i style="color: var(--accent);">📅</i>
+                <h3>Asignar Cita</h3>
+                <p>Nuevos pacientes.</p>
             </div>
-        </div>
-
-        <div id="view-agendar" class="view glass-card">
-            <button class="btn-back" onclick="cambiarVista('menu')">← VOLVER</button>
-            <h2 style="margin: 0 0 35px 0; color: var(--accent);">Configurar Agendamiento</h2>
-            <div class="form-row">
-                <div class="input-group">
-                    <label style="display:block; font-weight:700; margin-bottom:10px;">ESPECIALISTA</label>
-                    <select id="doc" onchange="actualizarAgenda()">
-                        <option>Dr. Alberto Casas (General)</option>
-                        <option>Dra. Elena Marín (Ortodoncia)</option>
-                        <option>Dr. Camilo Ruiz (Cirugía)</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label style="display:block; font-weight:700; margin-bottom:10px;">FECHA</label>
-                    <input type="date" id="fecha" onchange="actualizarAgenda()">
-                </div>
+            <div class="menu-item" onclick="cambiarVista('lista'); renderLista();">
+                <i style="color: var(--accent);">📋</i>
+                <h3>Ver Citas</h3>
+                <p>Consultar registros.</p>
             </div>
-            <label style="font-weight:700;">HORARIOS DISPONIBLES</label>
-            <div id="grid-horas" class="grid-horas"></div>
-            <input type="hidden" id="hora-seleccionada">
-            <button class="btn-confirm" onclick="finalizarAgendado()">Confirmar Espacio Médico</button>
-        </div>
-
-        <div id="view-lista" class="view glass-card">
-            <button class="btn-back" onclick="cambiarVista('menu')">← VOLVER AL MENÚ</button>
-            <h2 style="margin: 0 0 30px 0; color: var(--accent);">Mis Citas Registradas</h2>
-            <div id="lista-citas"></div>
         </div>
     </div>
 
-    <script>
+    <div id="view-agendar" class="view glass-card">
+        <button class="btn-back" onclick="cambiarVista('menu')">← VOLVER</button>
+        <h2 style="margin: 0 0 35px 0; color: var(--accent);">Configurar Agendamiento</h2>
 
-        // Coloca esto al principio de tu <script> o dentro de window.onload
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('fecha').setAttribute('min', today);
-        document.getElementById('fecha').value = today; // Por defecto ponemos hoy
-        const horarios = ["08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM"];
+        <div class="form-row">
+            <div>
+                <label>ESPECIALISTA</label>
+                <select id="doc" onchange="actualizarAgenda()">
+                    <option>Dr. Alberto Casas (General)</option>
+                    <option>Dra. Elena Marín (Ortodoncia)</option>
+                    <option>Dr. Camilo Ruiz (Cirugía)</option>
+                </select>
+            </div>
 
-        function cambiarVista(vistaId) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById('view-' + vistaId).classList.add('active');
-        }
+            <div>
+                <label>FECHA</label>
+                <input type="date" id="fecha" onchange="actualizarAgenda()">
+            </div>
+        </div>
 
-        function actualizarAgenda() {
+        <div id="grid-horas" class="grid-horas"></div>
+        <input type="hidden" id="hora-seleccionada">
+
+        <button class="btn-confirm" onclick="finalizarAgendado()">Confirmar</button>
+    </div>
+
+    <div id="view-lista" class="view glass-card">
+        <button class="btn-back" onclick="cambiarVista('menu')">← VOLVER</button>
+        <div id="lista-citas"></div>
+    </div>
+
+</div>
+
+<script>
+
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('fecha').setAttribute('min', today);
+document.getElementById('fecha').value = today;
+
+const horarios = ["08:00 AM","08:30 AM","09:00 AM","09:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","01:00 PM","01:30 PM","02:00 PM","02:30 PM","03:00 PM","03:30 PM","04:00 PM","04:30 PM","05:00 PM"];
+
+function cambiarVista(vistaId) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + vistaId).classList.add('active');
+}
+
+function actualizarAgenda() {
     const grid = document.getElementById('grid-horas');
     const fechaSelected = document.getElementById('fecha').value;
     const docSelected = document.getElementById('doc').value;
-    
+
     if(!fechaSelected) return;
 
-    const ahora = new Date();
-    const hoyString = ahora.toISOString().split('T')[0];
-    
     grid.innerHTML = 'Consultando...';
 
     fetch(`http://localhost/clinident/obtener_citas.php?fecha=${fechaSelected}&doctor=${docSelected}`)
         .then(res => res.json())
         .then(ocupados => {
-            const horasOcupadas = ocupados.map(cita => cita.hora);
+            const horasOcupadas = ocupados.map(c => c.hora);
             grid.innerHTML = '';
 
             horarios.forEach(h => {
@@ -154,150 +163,56 @@
                 div.className = 'hora-slot';
                 div.innerText = h;
 
-                // Lógica de comparación de tiempo para hoy
-                let esPasado = false;
-                if (fechaSelected === hoyString) {
-                    // Convertimos "08:30 AM" a un objeto Date para comparar
-                    const [horaStr, periodo] = h.split(' ');
-                    let [horas, minutos] = horaStr.split(':').map(Number);
-                    if (periodo === "PM" && horas !== 12) horas += 12;
-                    if (periodo === "AM" && horas === 12) horas = 0;
-                    
-                    const horaCita = new Date();
-                    horaCita.setHours(horas, minutos, 0, 0);
-                    
-                    if (horaCita < ahora) esPasado = true;
-                }
-
-                // Bloqueo si está ocupada O si ya pasó
-                if (horasOcupadas.includes(h) || esPasado) {
+                if (horasOcupadas.includes(h)) {
                     div.classList.add('occupied');
-                    div.innerText += esPasado ? " (Pasada)" : " (Ocupado)";
-                    div.onclick = null;
                 } else {
-                    div.onclick = function() {
+                    div.onclick = () => {
                         document.querySelectorAll('.hora-slot').forEach(s => s.classList.remove('selected'));
-                        this.classList.add('selected');
+                        div.classList.add('selected');
                         document.getElementById('hora-seleccionada').value = h;
                     };
                 }
+
                 grid.appendChild(div);
             });
         });
 }
-        function finalizarAgendado() {
-            const doc = document.getElementById('doc').value;
-            const fecha = document.getElementById('fecha').value;
-            const hora = document.getElementById('hora-seleccionada').value;
 
-            if(!fecha || !hora) return alert("Selecciona fecha y hora");
+function finalizarAgendado() {
+    const doc = document.getElementById('doc').value;
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora-seleccionada').value;
 
-            const fd = new FormData();
-            fd.append('paciente', 'Nico');
-            fd.append('doctor', doc);
-            fd.append('fecha', fecha);
-            fd.append('hora', hora);
+    if(!fecha || !hora) return alert("Selecciona fecha y hora");
 
-            fetch('http://localhost/clinident/guardar.php', { method: 'POST', body: fd })
-                .then(() => {
-                    alert("✅ Cita agendada con éxito");
-                    location.reload();
-                });
-        }
+    const fd = new FormData();
+    fd.append('paciente', 'Nico');
+    fd.append('doctor', doc);
+    fd.append('fecha', fecha);
+    fd.append('hora', hora);
 
-        function renderLista() {
-            const contenedor = document.getElementById('lista-citas');
-            fetch('http://localhost/clinident/obtener_citas.php')
-                .then(res => res.json())
-                .then(data => {
-                    contenedor.innerHTML = data.map(c => `
-                        <div class="report-item">
-                            <div><strong>${c.fecha}</strong> - ${c.hora}<br><small>${c.doctor}</small></div>
-                            <span style="color:var(--success)">CONFIRMADA</span>
-                        </div>
-                    `).join('') || "No tienes citas agendadas.";
-                });
-        }
-    </script>
-=======
-    // 1. Configuración de horarios
-    const horarios = ["08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM"];
-
-    function cambiarVista(id) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById('view-' + id).classList.add('active');
-    }
-
-    function prepararAgendado() {
-        document.getElementById('fecha').valueAsDate = new Date();
-        cambiarVista('agendar');
-        actualizarAgenda();
-    }
-
-    function actualizarAgenda() {
-        const grid = document.getElementById('grid-horas');
-        grid.innerHTML = '';
-        horarios.forEach(h => {
-            const div = document.createElement('div');
-            div.className = 'hora-slot';
-            div.innerText = h;
-            if(document.getElementById('hora-seleccionada').value === h) div.classList.add('selected');
-            
-            div.onclick = function() {
-                document.querySelectorAll('.hora-slot').forEach(s => s.classList.remove('selected'));
-                this.classList.add('selected');
-                document.getElementById('hora-seleccionada').value = h;
-                console.log("Hora seleccionada:", h);
-            };
-            grid.appendChild(div);
+    fetch('http://localhost/clinident/guardar.php', { method: 'POST', body: fd })
+        .then(() => {
+            alert("✅ Cita guardada");
+            location.reload();
         });
-    }
+}
 
-    // 2. FUNCIÓN DE GUARDADO (LA QUE IMPORTA)
-    function finalizarAgendado() {
-        console.log("Botón presionado: Iniciando guardado...");
+function renderLista() {
+    const contenedor = document.getElementById('lista-citas');
 
-        const docSelected = document.getElementById('doc').value;
-        const fechaSelected = document.getElementById('fecha').value;
-        const horaSelected = document.getElementById('hora-seleccionada').value;
-
-        if(!fechaSelected || !horaSelected) {
-            alert("⚠️ Por favor selecciona una fecha y haz clic en una hora.");
-            return;
-        }
-
-        // Crear el paquete de datos
-        const formData = new FormData();
-        formData.append('paciente', 'Nico');
-        formData.append('doctor', docSelected);
-        formData.append('fecha', fechaSelected);
-        formData.append('hora', horaSelected);
-
-        console.log("Enviando datos a guardar.php...");
-
-        fetch('guardar.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
+    fetch('http://localhost/clinident/obtener_citas.php')
+        .then(res => res.json())
         .then(data => {
-            console.log("Respuesta del servidor:", data);
-            if(data.trim() === "Exito") {
-                alert("✅ ¡Cita guardada con éxito en MySQL!");
-                window.location.href = "recepcion_pagos.html";
-            } else {
-                alert("Servidor dice: " + data);
-            }
-        })
-        .catch(error => {
-            console.error("Error en Fetch:", error);
-            alert("Error de conexión. Revisa la consola (F12)");
+            contenedor.innerHTML = data.map(c => `
+                <div class="report-item">
+                    <div>${c.fecha} - ${c.hora}<br>${c.doctor}</div>
+                </div>
+            `).join('');
         });
-    }
+}
 
-    function cancelarEdicion() { cambiarVista('menu'); }
 </script>
->>>>>>> 498b2d82d28715049bae9951b7858b8b4180562b
+
 </body>
 </html>
-
